@@ -1,0 +1,14 @@
+{
+	"ImportPath": ".",
+	"GoVersion": "go1.5.2",
+	"Packages": [
+		"./..."
+	],
+	"Deps": [
+		{
+			"ImportPath": "github.com/julienschmidt/httprouter",
+			"Comment": "v1.1-14-g21439ef",
+			"Rev": "21439ef4d70ba4f3e2a5ed9249e7b03af4019b40"
+		}
+	]
+}
