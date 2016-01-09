@@ -4,7 +4,7 @@ You can walk the commit history to see what I tried. Below is an annotated summa
 
 ## The Visable Problem
 
-We were pushing a go app. The app ran fine locally and started up on `$PORT`. When we pushed to CF we got a 127 exit code but staging went fine. It looked to us like our code was being built but that CF could not find the executable it just built. Due to the silence of `godep` it was really hard to figure out what was going on, was it a build problem or a runtime problem?  
+We were pushing a super basic hello world go app. The app ran fine locally and started up on `$PORT`. When we pushed to CF we got a 127 exit code but staging went fine. It looked to us like our code was being built but that CF could not find the executable it just built. Due to the silence of `godep` it was really hard to figure out what was going on, was it a build problem or a runtime problem? We added logging before the code started listening for connections to see if the our app was crashing (ignoring what the exit code was telling us) and found nothing.
 
 ##What's the actual problem, our logs are telling us nothing?
 The code was being compiled during the staging process just fine, as we suspected because we didn't see any errors. But we could not find an executable named `goservice` as we expected to (note, I changed the name from `go_service` in the zip you sent me to comply with golang convention). I couldn't think of anything more I could do to get CF to tell me what it was doing, we used all the diagnostic commands I could think of `cf events` and `cf logs`. So I need to see what it's working with. Lets download and untar the dropplet and stare at it a bit.
@@ -70,6 +70,15 @@ So, I know something goofy must be happening in Godeps.json, lets look at or Imp
 After that I pushed the app again and it worked as expected, cf started it, health checks passed and I could `curl` widgets to my hearts content.  
 
 I'm not sure how you ended up in this situation I suspect it's because an unusual workflow by creating code without repo or something that caused Godep to use "." as the import path. Was it maybe that the project was initially in the root directory of $GOPATH? Godep got really confused and did the wrong thing, at least as far as CF is concerned, and I don't think it makes sense to be self referential given go's import semantics... curious for others thoughts here. I'm noodling on what I want to do to handle this case in the future. I think we should catch it in the buildpack and error out (as three hours and having to know a lot about go conventions is a little much for troubleshooting), but I'd like to figure out how we got here before I submit that to the team.
+
+# Summary / Lessons learned 
+
+* Lean on your intuition about how your language / framework is supposed to work, that gives you a way to navigate the buildpack
+* Build to standards, the buidpacks assume you have
+* Pay attention to the meaning of [exit codes](http://tldp.org/LDP/abs/html/exitcodes.html), even if you don't get sufficent logs 
+* Read the buildpack source code early on, it's will verify your assumptions and you can add logging to it by extending it. 
+  * consider PR'ing useful logging and diagnostics back in!
+* Look at working examples, espically for generated code and configuraion
 
 # Other stuff I tried
 I tried a couple of things and failed as an experiment. At first I thought it might be that you had [app.go instead of main.go. But that made no difference](https://github.com/krujos/goservice/commit/a217dffeb82704d07560349ca5023d25ee974331)
