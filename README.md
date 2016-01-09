@@ -45,8 +45,8 @@ tar: Error exit delayed from previous errors.
 
 ➜ /tmp # Scratch head for an inordinate amount of time, write off the tar error
 ➜ /tmp # as red herring based on gut, CF would have blown up differently for a
-➜ /tmp # Spend a lot of time looking into the app directory, getting confused by
 ➜ /tmp # bad droplet. the app directory. "goservice" should be there, but I see
+➜ /tmp # Spend a lot of time looking into the app directory, getting confused by
 ➜ /tmp # a "src" directory with nothing in it... wait, it's not a directory.
 
 ➜ /tmp  file app/bin/src
