@@ -1,9 +1,6 @@
 {
-	"ImportPath": ".",
+	"ImportPath": "github.com/krujos/goservice",
 	"GoVersion": "go1.5.2",
-	"Packages": [
-		"./..."
-	],
 	"Deps": [
 		{
 			"ImportPath": "github.com/julienschmidt/httprouter",

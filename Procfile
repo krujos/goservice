@@ -1,3 +1,3 @@
-web: src
+web: goservice
 
 
