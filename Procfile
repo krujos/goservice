@@ -1,2 +1,3 @@
-web: server
+web: src
+
 
