@@ -57,9 +57,9 @@ So I changed the `Procfile` to call an executable named `src` and pushed again. 
 
 ## How did we get here?
 
-I needed to figure out how the buildpack names a go app. Usually the name of the directory is used if `go build|install` does not receive a `-o` flag. I could not figure out how CF would know what to feed for `-o`, so I started looking at how the [go buildpack](https://github.com/cloudfoundry/go-buildpack) lays out the project directories. [I discovered the build pack uses the ImportPath in Godeps.json to name the executable](https://github.com/cloudfoundry/go-buildpack/blob/master/bin/compile#L121).
+I needed to figure out how the buildpack names a go app. Usually the name of the directory is used if `go build|install` does not receive a `-o` flag. I could not figure out how CF would know what to feed for `-o`, so I started looking at how the [go buildpack](https://github.com/cloudfoundry/go-buildpack) lays out the project directories. [I discovered the build pack uses the `ImportPath` in Godeps.json to name the executable](https://github.com/cloudfoundry/go-buildpack/blob/master/bin/compile#L121).
 
-So the buildpack must do something with name right? [Line 176](https://github.com/cloudfoundry/go-buildpack/blob/master/bin/compile#L176) is where it makes a directory with the name, and then by convention go names the executable (because it's got a main) to the name of the directory. So standard go conventions so far.
+So the buildpack must do something with name right? [Line 176 & 177](https://github.com/cloudfoundry/go-buildpack/blob/master/bin/compile#L176) is where it makes a directory with the name, and then by convention go names the executable (because it's got a main) to the name of the directory. So standard go conventions so far.
 
 So, I know something goofy must be happening in Godeps.json, lets look at or ImportPath. [We reference the current directory Lets change that to something more conventional.](https://github.com/krujos/goservice/commit/995619bea518b40a817b2d8e4f76139b1b68bf3c)(you might have to click "show diff")!
 
