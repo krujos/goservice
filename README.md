@@ -2,6 +2,10 @@
 
 You can walk the commit history to see what I tried. Below is an annotated summary.
 
+## The Visable Problem
+
+We were pushing a go app. The app ran fine locally and started up on `$PORT`. When we pushed to CF we got a 127 exit code but staging went fine. It looked to us like our code was being built but that CF could not find the executable it just built. Due to the silence of `godep` it was really hard to figure out what was going on, was it a build problem or a runtime problem?  
+
 ##What's the actual problem, our logs are telling us nothing?
 The code was being compiled during the staging process just fine, as we suspected because we didn't see any errors. But we could not find an executable named `goservice` as we expected to (note, I changed the name from `go_service` in the zip you sent me to comply with golang convention). I couldn't think of anything more I could do to get CF to tell me what it was doing, we used all the diagnostic commands I could think of `cf events` and `cf logs`. So I need to see what it's working with. Lets download and untar the dropplet and stare at it a bit.
 
